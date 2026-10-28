@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Official Student Registration Form for IEEE Innovation University Student Branch (IEEE IU SB)",
   "scripts": {
+    "build": "echo 'Static build ready'",
     "start": "node server.js",
     "test": "node test.js"
   },
