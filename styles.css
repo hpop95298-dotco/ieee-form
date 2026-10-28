@@ -1,0 +1,591 @@
+/* ==========================================================================
+   IEEE IU SB Registration Form Styles
+   Professional IEEE Blue & Light Theme
+   ========================================================================== */
+
+:root {
+  /* Brand Colors */
+  --color-ieee-blue: #00629B;
+  --color-ieee-dark: #002855;
+  --color-ieee-hover: #004e7c;
+  --color-ieee-active: #003d61;
+  --color-ieee-light: #e6f1f7;
+  --color-ieee-ring: rgba(0, 98, 155, 0.2);
+
+  /* Neutrals */
+  --color-bg-page: #ffffff;
+  --color-bg-card: #ffffff;
+  --color-border-card: #e2e8f0;
+  --color-border-input: #cbd5e1;
+  --color-border-input-hover: #94a3b8;
+  --color-text-title: #0f172a;
+  --color-text-body: #334155;
+  --color-text-muted: #64748b;
+  --color-text-label: #1e293b;
+
+  /* State Colors */
+  --color-error: #dc2626;
+  --color-error-bg: #fef2f2;
+  --color-error-border: #fecaca;
+  --color-error-ring: rgba(220, 38, 38, 0.18);
+  --color-success: #15803d;
+  --color-success-bg: #f0fdf4;
+  --color-success-border: #bbf7d0;
+
+  /* Dimensions & Spacing */
+  --radius-card: 16px;
+  --radius-input: 8px;
+  --radius-btn: 8px;
+  --shadow-card: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 
+                 0 10px 25px -5px rgba(0, 40, 85, 0.08),
+                 0 0 0 1px rgba(0, 0, 0, 0.03);
+  --font-stack: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Base Reset & Typography */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-stack);
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--color-text-body);
+  background-color: var(--color-bg-page);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Page Container */
+.page-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  padding: 2.5rem 1.25rem;
+}
+
+/* Card Wrapper & Centered Card */
+.card-wrapper {
+  width: 100%;
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+.registration-card {
+  background-color: var(--color-bg-card);
+  border-radius: var(--radius-card);
+  border: 1px solid var(--color-border-card);
+  box-shadow: 0 4px 24px -2px rgba(0, 40, 85, 0.08), 0 1px 3px rgba(0, 0, 0, 0.04);
+  padding: 2.25rem 2rem 1.75rem 2rem;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Subtle IEEE Blue Header Accent Strip */
+.registration-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #5c2d91 0%, var(--color-ieee-blue) 45%, var(--color-ieee-dark) 100%);
+}
+
+/* Header Area with Logos */
+.form-header {
+  text-align: center;
+  margin-bottom: 1.85rem;
+}
+
+.logos-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.25rem;
+  margin-bottom: 1.25rem;
+  padding-bottom: 0.25rem;
+}
+
+.logo-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+/* Logo Sizing and Proportion Preservation */
+.logo {
+  display: block;
+  object-fit: contain;
+  transition: transform 0.2s ease;
+}
+
+.logo-iu {
+  height: 46px;
+  width: auto;
+  max-width: 165px;
+}
+
+.logo-ieee {
+  height: 62px;
+  width: auto;
+  max-width: 65px;
+  border-radius: 50%;
+  background-color: transparent;
+}
+
+.logo-separator {
+  width: 1px;
+  height: 38px;
+  background-color: var(--color-border-card);
+  flex-shrink: 0;
+}
+
+/* Form Titles */
+.form-title {
+  font-size: 1.45rem;
+  font-weight: 700;
+  color: var(--color-text-title);
+  letter-spacing: -0.02em;
+  margin-bottom: 0.35rem;
+}
+
+.form-subtitle {
+  font-size: 0.925rem;
+  color: var(--color-text-muted);
+  line-height: 1.4;
+}
+
+/* Status Notifications Banner */
+.status-message {
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius-input);
+  font-size: 0.885rem;
+  font-weight: 500;
+  margin-bottom: 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.status-message.error {
+  background-color: var(--color-error-bg);
+  color: var(--color-error);
+  border: 1px solid var(--color-error-border);
+}
+
+.status-message.info {
+  background-color: var(--color-ieee-light);
+  color: var(--color-ieee-dark);
+  border: 1px solid rgba(0, 98, 155, 0.2);
+}
+
+/* Form Groups and Fields */
+.registration-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+
+.form-label {
+  font-size: 0.885rem;
+  font-weight: 600;
+  color: var(--color-text-label);
+  margin-bottom: 0.45rem;
+  display: inline-block;
+}
+
+.required-indicator {
+  color: var(--color-error);
+  font-weight: 700;
+  margin-left: 0.15rem;
+}
+
+/* Inputs */
+.form-input {
+  width: 100%;
+  height: 44px;
+  padding: 0 0.875rem;
+  font-family: inherit;
+  font-size: 0.935rem;
+  color: var(--color-text-title);
+  background-color: #ffffff;
+  border: 1px solid var(--color-border-input);
+  border-radius: var(--radius-input);
+  transition: var(--transition);
+  outline: none;
+}
+
+.form-input::placeholder {
+  color: #94a3b8;
+}
+
+.form-input:hover:not(:disabled):not([aria-invalid="true"]) {
+  border-color: var(--color-border-input-hover);
+}
+
+.form-input:focus {
+  border-color: var(--color-ieee-blue);
+  box-shadow: 0 0 0 3px var(--color-ieee-ring);
+}
+
+.form-input:disabled {
+  background-color: #f8fafc;
+  color: #94a3b8;
+  cursor: not-allowed;
+  border-color: #e2e8f0;
+}
+
+/* Select Input Styling */
+.select-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.form-select {
+  width: 100%;
+  height: 44px;
+  padding: 0 2.25rem 0 0.875rem;
+  font-family: inherit;
+  font-size: 0.935rem;
+  color: var(--color-text-title);
+  background-color: #ffffff;
+  border: 1px solid var(--color-border-input);
+  border-radius: var(--radius-input);
+  transition: var(--transition);
+  outline: none;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23475569' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.875rem center;
+  background-size: 16px 16px;
+}
+
+.form-select:hover:not(:disabled):not([aria-invalid="true"]) {
+  border-color: var(--color-border-input-hover);
+}
+
+.form-select:focus {
+  border-color: var(--color-ieee-blue);
+  box-shadow: 0 0 0 3px var(--color-ieee-ring);
+}
+
+.form-select:disabled {
+  background-color: #f8fafc;
+  color: #94a3b8;
+  cursor: not-allowed;
+  border-color: #e2e8f0;
+}
+
+/* Field Validation Error State */
+.form-group.has-error .form-input,
+.form-group.has-error .form-select {
+  border-color: var(--color-error);
+  background-color: #fffbfa;
+}
+
+.form-group.has-error .form-input:focus,
+.form-group.has-error .form-select:focus {
+  border-color: var(--color-error);
+  box-shadow: 0 0 0 3px var(--color-error-ring);
+}
+
+.field-error {
+  color: var(--color-error);
+  font-size: 0.815rem;
+  font-weight: 500;
+  margin-top: 0.35rem;
+  min-height: 1.15rem;
+  line-height: 1.2;
+}
+
+/* Form Actions & Primary Submit Button */
+.form-actions {
+  margin-top: 0.5rem;
+}
+
+.btn-submit {
+  width: 100%;
+  height: 46px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background-color: var(--color-ieee-blue);
+  color: #ffffff;
+  font-family: inherit;
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  border: none;
+  border-radius: var(--radius-btn);
+  cursor: pointer;
+  transition: var(--transition);
+  box-shadow: 0 2px 4px rgba(0, 98, 155, 0.15);
+}
+
+.btn-submit:hover:not(:disabled) {
+  background-color: var(--color-ieee-hover);
+  box-shadow: 0 4px 8px rgba(0, 98, 155, 0.25);
+  transform: translateY(-1px);
+}
+
+.btn-submit:active:not(:disabled) {
+  background-color: var(--color-ieee-active);
+  transform: translateY(0);
+}
+
+.btn-submit:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px var(--color-ieee-ring), 0 2px 4px rgba(0, 98, 155, 0.2);
+}
+
+.btn-submit:disabled {
+  background-color: #94a3b8;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* Spinner for Loading State */
+.btn-spinner {
+  display: none;
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: #ffffff;
+  border-radius: 50%;
+  animation: spin 0.75s linear infinite;
+}
+
+.btn-submit.loading .btn-spinner {
+  display: inline-block;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Success View */
+.success-view {
+  text-align: center;
+  padding: 1.5rem 0.5rem 0.75rem 0.5rem;
+}
+
+.success-icon-wrapper {
+  width: 58px;
+  height: 58px;
+  background-color: var(--color-success-bg);
+  border: 1px solid var(--color-success-border);
+  color: var(--color-success);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1.25rem auto;
+}
+
+.success-icon {
+  width: 32px;
+  height: 32px;
+}
+
+.success-title {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--color-text-title);
+  margin-bottom: 0.35rem;
+}
+
+.success-subtitle-ar {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--color-success);
+  margin-bottom: 0.75rem;
+}
+
+.success-message {
+  font-size: 0.95rem;
+  color: var(--color-text-body);
+  line-height: 1.5;
+  margin-bottom: 1.25rem;
+}
+
+/* Summary Card for Registration Details */
+.summary-card {
+  background-color: #f8fafc;
+  border: 1px solid var(--color-border-card);
+  border-radius: var(--radius-input);
+  padding: 1rem 1.15rem;
+  margin-bottom: 1.25rem;
+  text-align: left;
+}
+
+.summary-card-title {
+  font-size: 0.785rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-text-muted);
+  margin-bottom: 0.65rem;
+  font-weight: 700;
+}
+
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.35rem 0;
+  font-size: 0.9rem;
+  border-bottom: 1px dashed #e2e8f0;
+}
+
+.summary-row:last-child {
+  border-bottom: none;
+}
+
+.summary-label {
+  color: var(--color-text-muted);
+  font-weight: 500;
+}
+
+.summary-value {
+  color: var(--color-text-title);
+  font-weight: 600;
+}
+
+/* Welcome Box */
+.welcome-box {
+  background-color: var(--color-ieee-light);
+  border: 1px solid rgba(0, 98, 155, 0.18);
+  border-radius: var(--radius-input);
+  padding: 0.875rem 1rem;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.welcome-text {
+  font-size: 0.865rem;
+  color: var(--color-ieee-dark);
+  margin-bottom: 0.35rem;
+  line-height: 1.45;
+}
+
+.welcome-text-ar {
+  font-size: 0.865rem;
+  color: var(--color-ieee-dark);
+  font-weight: 500;
+  line-height: 1.45;
+  direction: rtl;
+}
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 42px;
+  padding: 0 1.25rem;
+  background-color: #ffffff;
+  color: var(--color-ieee-blue);
+  border: 1px solid var(--color-ieee-blue);
+  border-radius: var(--radius-btn);
+  font-family: inherit;
+  font-size: 0.885rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.btn-secondary:hover {
+  background-color: var(--color-ieee-light);
+}
+
+.btn-secondary:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px var(--color-ieee-ring);
+}
+
+/* Footer / Attribution */
+.form-footer {
+  margin-top: 1.75rem;
+  padding-top: 1rem;
+  border-top: 1px solid #f1f5f9;
+  text-align: center;
+}
+
+.footer-text {
+  font-size: 0.785rem;
+  color: var(--color-text-muted);
+}
+
+/* ==========================================================================
+   Responsive Adaptations
+   ========================================================================== */
+@media (max-width: 480px) {
+  .page-container {
+    padding: 1.25rem 0.75rem;
+  }
+
+  .registration-card {
+    padding: 1.75rem 1.25rem 1.25rem 1.25rem;
+    border-radius: 12px;
+  }
+
+  .logos-row {
+    gap: 0.85rem;
+    margin-bottom: 1rem;
+  }
+
+  .logo-iu {
+    height: 38px;
+    max-width: 135px;
+  }
+
+  .logo-ieee {
+    height: 50px;
+    max-width: 52px;
+  }
+
+  .logo-separator {
+    height: 30px;
+  }
+
+  .form-title {
+    font-size: 1.25rem;
+  }
+
+  .form-subtitle {
+    font-size: 0.875rem;
+  }
+
+  .form-input,
+  .form-select {
+    height: 42px;
+    font-size: 0.9rem;
+  }
+
+  .btn-submit {
+    height: 44px;
+    font-size: 0.9rem;
+  }
+}
+

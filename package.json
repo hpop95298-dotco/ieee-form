@@ -1,0 +1,19 @@
+{
+  "name": "ieee-iu-sb-registration-form",
+  "version": "1.0.0",
+  "description": "Official Student Registration Form for IEEE Innovation University Student Branch (IEEE IU SB)",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "node test.js"
+  },
+  "keywords": [
+    "ieee",
+    "registration-form",
+    "student-branch",
+    "innovation-university"
+  ],
+  "author": "IEEE Innovation University Student Branch",
+  "license": "ISC"
+}
+

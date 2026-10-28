@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Official student registration form for IEEE Innovation University Student Branch (IEEE IU SB).">
+  <title>IEEE IU SB Registration</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" type="image/png" href="assets/ieee-logo.png">
+</head>
+<body>
+  <div class="page-container">
+    <main class="card-wrapper" role="main">
+      <!-- Card Container -->
+      <div class="registration-card">
+        
+        <!-- Header with Official Logos -->
+        <header class="form-header">
+          <div class="logos-row">
+            <div class="logo-box">
+              <img 
+                src="assets/innovation-university-logo.png" 
+                alt="Innovation University Logo" 
+                class="logo logo-iu"
+              />
+            </div>
+            <div class="logo-separator" aria-hidden="true"></div>
+            <div class="logo-box">
+              <img 
+                src="assets/ieee-logo.png" 
+                alt="IEEE Logo" 
+                class="logo logo-ieee"
+              />
+            </div>
+          </div>
+          <h1 class="form-title">IEEE IU SB Registration</h1>
+          <p class="form-subtitle">Register your details to join our student branch.</p>
+        </header>
+
+        <!-- Status Notification Area -->
+        <div id="statusMessage" class="status-message" role="status" aria-live="polite" hidden></div>
+
+        <!-- Registration Form -->
+        <form id="registrationForm" class="registration-form" novalidate>
+          
+          <!-- Field 1: Full Name -->
+          <div class="form-group" id="groupFullName">
+            <label for="fullName" class="form-label">
+              Full Name <span class="required-indicator" aria-hidden="true">*</span>
+            </label>
+            <input 
+              type="text" 
+              id="fullName" 
+              name="fullName" 
+              class="form-input" 
+              placeholder="Enter your full name" 
+              autocomplete="name"
+              required 
+              aria-required="true"
+            />
+            <div id="fullNameError" class="field-error" role="alert" aria-live="assertive"></div>
+          </div>
+
+          <!-- Field 2: Email Address -->
+          <div class="form-group" id="groupEmail">
+            <label for="email" class="form-label">
+              Email Address <span class="required-indicator" aria-hidden="true">*</span>
+            </label>
+            <input 
+              type="email" 
+              id="email" 
+              name="email" 
+              class="form-input" 
+              placeholder="Enter your email address" 
+              autocomplete="email"
+              required 
+              aria-required="true"
+            />
+            <div id="emailError" class="field-error" role="alert" aria-live="assertive"></div>
+          </div>
+
+          <!-- Field 3: ID -->
+          <div class="form-group" id="groupId">
+            <label for="studentId" class="form-label">
+              ID <span class="required-indicator" aria-hidden="true">*</span>
+            </label>
+            <input 
+              type="text" 
+              id="studentId" 
+              name="studentId" 
+              class="form-input" 
+              placeholder="Enter your ID" 
+              autocomplete="off"
+              required 
+              aria-required="true"
+            />
+            <div id="idError" class="field-error" role="alert" aria-live="assertive"></div>
+          </div>
+
+          <!-- Field 4: Faculty / College Selection -->
+          <div class="form-group" id="groupFaculty">
+            <label for="faculty" class="form-label">
+              Faculty <span class="required-indicator" aria-hidden="true">*</span>
+            </label>
+            <div class="select-wrapper">
+              <select 
+                id="faculty" 
+                name="faculty" 
+                class="form-select" 
+                required 
+                aria-required="true"
+              >
+                <option value="" disabled selected>Select your faculty (اختر الكلية)</option>
+                <option value="Engineering">Engineering - هندسة</option>
+                <option value="Computers and Information Technology">Computers &amp; Information Technology - حاسبات وتكنولوجيا المعلومات</option>
+                <option value="Pharmacy">Pharmacy - صيدلة</option>
+                <option value="Dentistry">Dentistry - طب الأسنان</option>
+                <option value="Nursing">Nursing - تمريض</option>
+                <option value="Business">Business - إدارة الأعمال (بيزنس)</option>
+                <option value="Physical Therapy">Physical Therapy - علاج طبيعي</option>
+              </select>
+            </div>
+            <div id="facultyError" class="field-error" role="alert" aria-live="assertive"></div>
+          </div>
+
+          <!-- Primary Submit Button -->
+          <div class="form-actions">
+            <button type="submit" id="submitBtn" class="btn-submit">
+              <span class="btn-spinner" aria-hidden="true"></span>
+              <span class="btn-text">Submit Registration</span>
+            </button>
+          </div>
+
+        </form>
+
+        <!-- Success Confirmation View -->
+        <div id="successView" class="success-view" hidden>
+          <div class="success-icon-wrapper" aria-hidden="true">
+            <svg class="success-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+              <polyline points="22 4 12 14.01 9 11.01"></polyline>
+            </svg>
+          </div>
+          <h2 class="success-title">Submission Confirmed</h2>
+          <p class="success-message">Your registration has been submitted successfully.</p>
+          <div class="success-actions">
+            <button type="button" id="resetBtn" class="btn-secondary">
+              Submit Another Registration
+            </button>
+          </div>
+        </div>
+
+        <!-- Footer / Branding Note -->
+        <footer class="form-footer">
+          <p class="footer-text">
+            IEEE Innovation University Student Branch &copy; <span id="currentYear"></span>
+            &bull; <a href="admin.html" style="color: inherit; text-decoration: underline; opacity: 0.75;">Admin Dashboard</a>
+          </p>
+        </footer>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- Supabase Cloud SDK & Configuration -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-config.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
+

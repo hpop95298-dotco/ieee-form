@@ -1,0 +1,878 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="IEEE IU SB - Admin Dashboard to view and manage student registrations.">
+  <title>Admin Dashboard - IEEE IU SB</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" type="image/png" href="assets/ieee-logo.png">
+  <style>
+    /* Admin Dashboard Layout */
+    .admin-container {
+      width: 100%;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 1.5rem 1rem;
+    }
+
+    .admin-card {
+      background-color: #ffffff;
+      border: 1px solid var(--color-border-card);
+      border-radius: var(--radius-card);
+      box-shadow: 0 4px 24px -2px rgba(0, 40, 85, 0.08);
+      padding: 1.75rem 2rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .admin-card::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, #5c2d91 0%, var(--color-ieee-blue) 45%, var(--color-ieee-dark) 100%);
+    }
+
+    /* Login Box Container */
+    .login-wrapper {
+      max-width: 420px;
+      margin: 1.5rem auto;
+      text-align: center;
+    }
+
+    .login-logos {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1.25rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .login-logos img.logo-iu {
+      height: 44px;
+      max-width: 155px;
+    }
+
+    .login-logos img.logo-ieee {
+      height: 56px;
+      max-width: 58px;
+      border-radius: 50%;
+    }
+
+    .password-input-wrapper {
+      position: relative;
+      width: 100%;
+    }
+
+    .toggle-password-btn {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      color: #64748b;
+      cursor: pointer;
+      font-size: 0.85rem;
+      padding: 4px 6px;
+    }
+
+    /* Dashboard Header */
+    .admin-header-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1.25rem;
+      border-bottom: 1px solid #f1f5f9;
+    }
+
+    .admin-title-group {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .admin-logos {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .admin-logos img.logo-iu {
+      height: 38px;
+      max-width: 135px;
+    }
+
+    .admin-logos img.logo-ieee {
+      height: 46px;
+      max-width: 48px;
+      border-radius: 50%;
+    }
+
+    .admin-badge {
+      display: inline-block;
+      padding: 0.2rem 0.6rem;
+      background-color: var(--color-ieee-light);
+      color: var(--color-ieee-blue);
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      margin-left: 0.5rem;
+    }
+
+    /* Stats Grid */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 1rem;
+      margin-bottom: 1.75rem;
+    }
+
+    .stat-card {
+      background-color: #f8fafc;
+      border: 1px solid var(--color-border-card);
+      border-radius: var(--radius-input);
+      padding: 1rem 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+
+    .stat-label {
+      font-size: 0.825rem;
+      color: var(--color-text-muted);
+      font-weight: 600;
+    }
+
+    .stat-value {
+      font-size: 1.85rem;
+      font-weight: 700;
+      color: var(--color-ieee-dark);
+      line-height: 1.2;
+    }
+
+    /* Toolbar: Filters and Search */
+    .toolbar-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1.25rem;
+    }
+
+    .search-filter-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      flex: 1;
+      min-width: 280px;
+    }
+
+    .search-input {
+      flex: 1;
+      min-width: 200px;
+      height: 40px;
+      padding: 0 0.875rem;
+      border: 1px solid var(--color-border-input);
+      border-radius: var(--radius-input);
+      font-size: 0.9rem;
+      outline: none;
+    }
+
+    .search-input:focus {
+      border-color: var(--color-ieee-blue);
+      box-shadow: 0 0 0 3px var(--color-ieee-ring);
+    }
+
+    .filter-select {
+      height: 40px;
+      padding: 0 2rem 0 0.875rem;
+      border: 1px solid var(--color-border-input);
+      border-radius: var(--radius-input);
+      font-size: 0.885rem;
+      outline: none;
+      background-color: #ffffff;
+      cursor: pointer;
+    }
+
+    .action-btn-group {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .btn-action {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      height: 40px;
+      padding: 0 1rem;
+      border-radius: var(--radius-btn);
+      font-size: 0.875rem;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      text-decoration: none;
+      transition: var(--transition);
+    }
+
+    .btn-export {
+      background-color: #15803d;
+      color: #ffffff;
+    }
+
+    .btn-export:hover {
+      background-color: #166534;
+    }
+
+    .btn-refresh {
+      background-color: var(--color-ieee-blue);
+      color: #ffffff;
+    }
+
+    .btn-refresh:hover {
+      background-color: var(--color-ieee-hover);
+    }
+
+    .btn-outline {
+      background-color: #ffffff;
+      color: var(--color-text-body);
+      border: 1px solid var(--color-border-card);
+    }
+
+    .btn-outline:hover {
+      background-color: #f1f5f9;
+    }
+
+    .btn-logout {
+      background-color: #fef2f2;
+      color: #dc2626;
+      border: 1px solid #fecaca;
+    }
+
+    .btn-logout:hover {
+      background-color: #fee2e2;
+    }
+
+    /* Data Table */
+    .table-responsive {
+      overflow-x: auto;
+      border: 1px solid var(--color-border-card);
+      border-radius: var(--radius-input);
+      background-color: #ffffff;
+    }
+
+    .registrations-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.885rem;
+      text-align: left;
+    }
+
+    .registrations-table th {
+      background-color: #f8fafc;
+      color: var(--color-text-label);
+      font-weight: 600;
+      padding: 0.85rem 1rem;
+      border-bottom: 1px solid var(--color-border-card);
+      white-space: nowrap;
+    }
+
+    .registrations-table td {
+      padding: 0.85rem 1rem;
+      border-bottom: 1px solid #f1f5f9;
+      color: var(--color-text-body);
+      vertical-align: middle;
+    }
+
+    .registrations-table tr:hover {
+      background-color: #f8fafc;
+    }
+
+    .registrations-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .student-id-code {
+      font-family: monospace;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--color-ieee-dark);
+      background-color: #f1f5f9;
+      padding: 0.15rem 0.45rem;
+      border-radius: 4px;
+    }
+
+    .faculty-tag {
+      display: inline-block;
+      padding: 0.2rem 0.6rem;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      background-color: #eff6ff;
+      color: #1d4ed8;
+      border: 1px solid #dbeafe;
+    }
+
+    .faculty-tag.eng { background-color: #eff6ff; color: #1e40af; border-color: #bfdbfe; }
+    .faculty-tag.cs { background-color: #f5f3ff; color: #6b21a8; border-color: #ddd6fe; }
+    .faculty-tag.pharm { background-color: #ecfdf5; color: #065f46; border-color: #a7f3d0; }
+    .faculty-tag.dent { background-color: #f0fdfa; color: #115e59; border-color: #99f6e4; }
+    .faculty-tag.nurs { background-color: #fdf2f8; color: #9d174d; border-color: #fbcfe8; }
+    .faculty-tag.biz { background-color: #fffbeb; color: #92400e; border-color: #fde68a; }
+    .faculty-tag.pt { background-color: #fef2f2; color: #991b1b; border-color: #fecaca; }
+
+    .btn-delete-row {
+      background: none;
+      border: none;
+      color: #dc2626;
+      cursor: pointer;
+      padding: 0.35rem 0.5rem;
+      border-radius: 4px;
+      font-size: 0.825rem;
+      font-weight: 600;
+      transition: background-color 0.2s;
+    }
+
+    .btn-delete-row:hover {
+      background-color: #fee2e2;
+    }
+
+    .empty-state {
+      padding: 3rem 1rem;
+      text-align: center;
+      color: var(--color-text-muted);
+    }
+
+    .empty-icon {
+      font-size: 2.5rem;
+      margin-bottom: 0.75rem;
+      color: #cbd5e1;
+    }
+
+    .table-footer-info {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 1rem;
+      font-size: 0.85rem;
+      color: var(--color-text-muted);
+    }
+  </style>
+</head>
+<body>
+  <div class="admin-container">
+
+    <!-- ============================================================== -->
+    <!-- 1. LOGIN GATE VIEW (Displayed when not logged in)               -->
+    <!-- ============================================================== -->
+    <div id="loginSection" class="admin-card login-wrapper">
+      <div class="login-logos">
+        <img src="assets/innovation-university-logo.png" alt="Innovation University Logo" class="logo logo-iu" />
+        <div class="logo-separator" style="height: 34px;" aria-hidden="true"></div>
+        <img src="assets/ieee-logo.png" alt="IEEE Logo" class="logo logo-ieee" />
+      </div>
+
+      <h1 class="form-title" style="font-size: 1.35rem;">Admin Login</h1>
+      <p class="form-subtitle" style="margin-bottom: 1.5rem;">لوحة تحكم المشرف - يرجى تسجيل الدخول</p>
+
+      <div id="loginErrorMessage" class="status-message error" style="display: none; margin-bottom: 1rem;"></div>
+
+      <form id="adminLoginForm" style="text-align: left; display: flex; flex-direction: column; gap: 1.15rem;">
+        <div class="form-group">
+          <label for="adminEmailInput" class="form-label">Email or Identifier (البريد أو المعرف)</label>
+          <input 
+            type="text" 
+            id="adminEmailInput" 
+            class="form-input" 
+            placeholder="Enter email or identifier" 
+            autocomplete="username"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="adminPasswordInput" class="form-label">Password (كلمة المرور)</label>
+          <div class="password-input-wrapper">
+            <input 
+              type="password" 
+              id="adminPasswordInput" 
+              class="form-input" 
+              placeholder="Enter password" 
+              autocomplete="current-password"
+              required
+            />
+            <button type="button" id="togglePasswordBtn" class="toggle-password-btn" aria-label="Toggle password visibility">
+              👁️ Show
+            </button>
+          </div>
+        </div>
+
+        <button type="submit" id="loginSubmitBtn" class="btn-submit" style="margin-top: 0.5rem;">
+          Sign In (تسجيل الدخول)
+        </button>
+
+        <div style="text-align: center; margin-top: 0.5rem;">
+          <a href="index.html" style="font-size: 0.85rem; color: var(--color-ieee-blue); text-decoration: none;">
+            &larr; Back to Registration Form (العودة للاستمارة)
+          </a>
+        </div>
+      </form>
+    </div>
+
+    <!-- ============================================================== -->
+    <!-- 2. AUTHENTICATED DASHBOARD VIEW (Displayed when logged in)     -->
+    <!-- ============================================================== -->
+    <main id="dashboardSection" class="admin-card" role="main" style="display: none;">
+
+      <!-- Header Row with Logos & Controls -->
+      <div class="admin-header-row">
+        <div class="admin-title-group">
+          <div class="admin-logos">
+            <img src="assets/innovation-university-logo.png" alt="Innovation University Logo" class="logo logo-iu" />
+            <div class="logo-separator" style="height: 32px;" aria-hidden="true"></div>
+            <img src="assets/ieee-logo.png" alt="IEEE Logo" class="logo logo-ieee" />
+          </div>
+          <div>
+            <h1 class="form-title" style="margin-bottom: 0.2rem; font-size: 1.35rem;">
+              IEEE IU SB Registrations
+              <span class="admin-badge">Admin Dashboard</span>
+            </h1>
+            <p class="form-subtitle">لوحة تحكم المشرف - استعراض وإدارة طلبات تسجيل الطلاب</p>
+          </div>
+        </div>
+
+        <div class="action-btn-group">
+          <a href="index.html" class="btn-action btn-outline">
+            + New Registration
+          </a>
+          <button id="logoutBtn" class="btn-action btn-logout" title="Sign out of admin session">
+            🔒 Logout (تسجيل خروج)
+          </button>
+        </div>
+      </div>
+
+      <!-- Stats Cards Row -->
+      <div class="stats-grid">
+        <div class="stat-card">
+          <span class="stat-label">Total Registrations (إجمالي المسجلين)</span>
+          <span id="statTotal" class="stat-value">0</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-label">Engineering (هندسة)</span>
+          <span id="statEng" class="stat-value">0</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-label">Computers & IT (حاسبات)</span>
+          <span id="statCs" class="stat-value">0</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-label">Medical & Business (الكليات الأخرى)</span>
+          <span id="statOther" class="stat-value">0</span>
+        </div>
+      </div>
+
+      <!-- Toolbar: Search & Action Controls -->
+      <div class="toolbar-row">
+        <div class="search-filter-group">
+          <input 
+            type="search" 
+            id="searchInput" 
+            class="search-input" 
+            placeholder="Search by name, ID, email... (بحث)" 
+            autocomplete="off"
+          />
+          <select id="facultyFilter" class="filter-select">
+            <option value="">All Faculties (كل الكليات)</option>
+            <option value="Engineering">Engineering (هندسة)</option>
+            <option value="Computers and Information Technology">Computers & IT (حاسبات)</option>
+            <option value="Pharmacy">Pharmacy (صيدلة)</option>
+            <option value="Dentistry">Dentistry (أسنان)</option>
+            <option value="Nursing">Nursing (تمريض)</option>
+            <option value="Business">Business (بيزنس)</option>
+            <option value="Physical Therapy">Physical Therapy (علاج طبيعي)</option>
+          </select>
+        </div>
+
+        <div class="action-btn-group">
+          <button id="refreshBtn" class="btn-action btn-refresh" title="Reload data">
+            🔄 Refresh (تحديث)
+          </button>
+          <button id="exportCsvBtn" class="btn-action btn-export" title="Download Excel/CSV">
+            📥 Export CSV (تصدير إكسيل)
+          </button>
+        </div>
+      </div>
+
+      <!-- Registrations Data Table -->
+      <div class="table-responsive">
+        <table class="registrations-table" id="registrationsTable">
+          <thead>
+            <tr>
+              <th style="width: 45px;">#</th>
+              <th>Full Name (الاسم)</th>
+              <th>Email Address (البريد)</th>
+              <th>Student ID (الرقم التعريفي)</th>
+              <th>Faculty (الكلية)</th>
+              <th>Date (تاريخ التسجيل)</th>
+              <th style="text-align: center; width: 80px;">Action</th>
+            </tr>
+          </thead>
+          <tbody id="tableBody">
+            <tr>
+              <td colspan="7" class="empty-state">Loading registrations...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Table Footer Info -->
+      <div class="table-footer-info">
+        <span id="showingCountText">Showing 0 of 0 registrations</span>
+        <span id="lastUpdatedText">Last updated: Just now</span>
+      </div>
+
+      <!-- Footer -->
+      <footer class="form-footer" style="margin-top: 1.5rem;">
+        <p class="footer-text">IEEE Innovation University Student Branch &copy; <span id="currentYear"></span> - Admin Portal</p>
+      </footer>
+
+    </main>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-config.js"></script>
+  <script>
+    // Set dynamic copyright year
+    document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+    // DOM Elements
+    const loginSection = document.getElementById('loginSection');
+    const dashboardSection = document.getElementById('dashboardSection');
+    const adminLoginForm = document.getElementById('adminLoginForm');
+    const adminEmailInput = document.getElementById('adminEmailInput');
+    const adminPasswordInput = document.getElementById('adminPasswordInput');
+    const togglePasswordBtn = document.getElementById('togglePasswordBtn');
+    const loginErrorMessage = document.getElementById('loginErrorMessage');
+    const logoutBtn = document.getElementById('logoutBtn');
+
+    // Cryptographic SHA-256 hashes of credentials (prevents exposing plaintext in source)
+    const HASH_EMAIL = 'dfdb577632b8ae2cb1b39e0911a5dc5fd7ba59efd0db99d25659f88f7d30d9d3';
+    const HASH_PASS = 'd8d21c99757bd08f693abd7acc6bedee2d289bf6cbc58690a71f2d1dbb626c3d';
+    const AUTH_SESSION_KEY = 'ieee_admin_authenticated';
+
+    let allRegistrations = [];
+
+    // SHA-256 helper
+    async function hashString(str) {
+      const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
+      return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
+    }
+
+    // Toggle password visibility
+    togglePasswordBtn.addEventListener('click', () => {
+      const isPassword = adminPasswordInput.type === 'password';
+      adminPasswordInput.type = isPassword ? 'text' : 'password';
+      togglePasswordBtn.textContent = isPassword ? '🙈 Hide' : '👁️ Show';
+    });
+
+    // Check if session exists on load
+    function checkAuthSession() {
+      const isAuth = sessionStorage.getItem(AUTH_SESSION_KEY) === 'true';
+      if (isAuth) {
+        showDashboard();
+      } else {
+        showLogin();
+      }
+    }
+
+    function showLogin() {
+      loginSection.style.display = 'block';
+      dashboardSection.style.display = 'none';
+      loginErrorMessage.style.display = 'none';
+      adminPasswordInput.value = '';
+      adminEmailInput.focus();
+    }
+
+    function showDashboard() {
+      loginSection.style.display = 'none';
+      dashboardSection.style.display = 'block';
+      loadRegistrations();
+    }
+
+    // Handle Login Submit
+    adminLoginForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      loginErrorMessage.style.display = 'none';
+
+      const email = adminEmailInput.value.trim();
+      const password = adminPasswordInput.value.trim();
+
+      try {
+        const hashedEmail = await hashString(email);
+        const hashedPass = await hashString(password);
+
+        if (hashedEmail === HASH_EMAIL && hashedPass === HASH_PASS) {
+          sessionStorage.setItem(AUTH_SESSION_KEY, 'true');
+          showDashboard();
+          return;
+        }
+
+        // Also attempt backend auth if local server is running
+        const response = await fetch('/api/admin-login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password })
+        });
+
+        if (response.ok) {
+          sessionStorage.setItem(AUTH_SESSION_KEY, 'true');
+          showDashboard();
+        } else {
+          showLoginError('بيانات الدخول غير صحيحة. يرجى التأكد من البريد وكلمة السر.');
+        }
+      } catch (err) {
+        showLoginError('بيانات الدخول غير صحيحة. يرجى التأكد من البريد وكلمة السر.');
+      }
+    });
+
+    function showLoginError(msg) {
+      loginErrorMessage.textContent = msg;
+      loginErrorMessage.style.display = 'block';
+      adminPasswordInput.value = '';
+      adminPasswordInput.focus();
+    }
+
+    // Logout
+    logoutBtn.addEventListener('click', () => {
+      sessionStorage.removeItem(AUTH_SESSION_KEY);
+      showLogin();
+    });
+
+    // Tag class mapping for faculties
+    function getFacultyTagClass(faculty) {
+      const f = (faculty || '').toLowerCase();
+      if (f.includes('engineering')) return 'eng';
+      if (f.includes('computer')) return 'cs';
+      if (f.includes('pharm')) return 'pharm';
+      if (f.includes('dent')) return 'dent';
+      if (f.includes('nurs')) return 'nurs';
+      if (f.includes('business')) return 'biz';
+      if (f.includes('physical') || f.includes('therapy')) return 'pt';
+      return '';
+    }
+
+    // Fetch registrations from Supabase Cloud or Local Backend
+    async function loadRegistrations() {
+      const tbody = document.getElementById('tableBody');
+      try {
+        // Option A: If Supabase Cloud is configured, fetch directly from Supabase
+        if (typeof supabaseClient !== 'undefined' && supabaseClient) {
+          const { data, error } = await supabaseClient
+            .from((typeof SUPABASE_CONFIG !== 'undefined' && SUPABASE_CONFIG.tableName) || 'registrations')
+            .select('*')
+            .order('created_at', { ascending: false });
+
+          if (error) throw error;
+
+          allRegistrations = (data || []).map(r => ({
+            fullName: r.full_name || r.fullName,
+            email: r.email,
+            studentId: r.student_id || r.studentId,
+            faculty: r.faculty,
+            submittedAt: r.created_at || r.submittedAt
+          }));
+
+          console.log('[Dashboard] Loaded registrations from Supabase Cloud:', allRegistrations.length);
+        } else {
+          // Option B: Fetch from local server
+          const response = await fetch('/api/registrations');
+          if (!response.ok) {
+            throw new Error('Failed to fetch registrations from server');
+          }
+          allRegistrations = await response.json();
+        }
+
+        updateStats();
+        renderTable();
+        document.getElementById('lastUpdatedText').textContent = 'Last updated: ' + new Date().toLocaleTimeString();
+      } catch (err) {
+        console.error('Error fetching registrations:', err);
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="7" class="empty-state" style="color: #dc2626;">
+              <div style="font-size: 1.5rem; margin-bottom: 0.5rem;">⚠️</div>
+              Unable to load registrations. If running locally, make sure <code>npm start</code> is running. If using cloud, check Supabase configuration.
+            </td>
+          </tr>
+        `;
+      }
+    }
+
+    // Update Top Metric Statistics
+    function updateStats() {
+      const total = allRegistrations.length;
+      document.getElementById('statTotal').textContent = total;
+
+      let engCount = 0;
+      let csCount = 0;
+      let otherCount = 0;
+
+      allRegistrations.forEach(r => {
+        const f = (r.faculty || '').toLowerCase();
+        if (f.includes('engineering')) engCount++;
+        else if (f.includes('computer')) csCount++;
+        else otherCount++;
+      });
+
+      document.getElementById('statEng').textContent = engCount;
+      document.getElementById('statCs').textContent = csCount;
+      document.getElementById('statOther').textContent = otherCount;
+    }
+
+    // Render Table Rows with Search and Faculty Filter
+    function renderTable() {
+      const tbody = document.getElementById('tableBody');
+      const searchTerm = document.getElementById('searchInput').value.trim().toLowerCase();
+      const selectedFaculty = document.getElementById('facultyFilter').value;
+
+      const filtered = allRegistrations.filter(item => {
+        const matchesFaculty = !selectedFaculty || item.faculty === selectedFaculty;
+        const searchPool = `${item.fullName || ''} ${item.email || ''} ${item.studentId || ''} ${item.faculty || ''}`.toLowerCase();
+        const matchesSearch = !searchTerm || searchPool.includes(searchTerm);
+        return matchesFaculty && matchesSearch;
+      });
+
+      document.getElementById('showingCountText').textContent = `Showing ${filtered.length} of ${allRegistrations.length} registrations`;
+
+      if (filtered.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="7" class="empty-state">
+              <div class="empty-icon">📋</div>
+              <strong>No registrations found.</strong>
+              <p style="margin-top: 0.35rem; font-size: 0.85rem;">
+                ${allRegistrations.length === 0 ? 'No students have registered yet.' : 'Try adjusting your search or faculty filter.'}
+              </p>
+            </td>
+          </tr>
+        `;
+        return;
+      }
+
+      // Render rows
+      tbody.innerHTML = filtered.map((item, idx) => {
+        const originalIndex = allRegistrations.indexOf(item);
+        const tagClass = getFacultyTagClass(item.faculty);
+        const dateFormatted = item.submittedAt 
+          ? new Date(item.submittedAt).toLocaleDateString() + ' ' + new Date(item.submittedAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+          : '—';
+
+        return `
+          <tr>
+            <td style="color: #94a3b8; font-weight: 600;">${filtered.length - idx}</td>
+            <td><strong>${escapeHtml(item.fullName || '—')}</strong></td>
+            <td><a href="mailto:${escapeHtml(item.email || '')}" style="color: var(--color-ieee-blue); text-decoration: none;">${escapeHtml(item.email || '—')}</a></td>
+            <td><span class="student-id-code">${escapeHtml(item.studentId || '—')}</span></td>
+            <td><span class="faculty-tag ${tagClass}">${escapeHtml(item.faculty || 'Unassigned')}</span></td>
+            <td style="white-space: nowrap; color: #64748b; font-size: 0.825rem;">${dateFormatted}</td>
+            <td style="text-align: center;">
+              <button class="btn-delete-row" onclick="deleteRegistration('${escapeHtml(item.studentId)}', ${originalIndex})" title="Delete record">
+                🗑️ Delete
+              </button>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    // Delete single registration (Supabase or Local)
+    async function deleteRegistration(studentId, originalIndex) {
+      if (!confirm(`Are you sure you want to delete registration for ID: ${studentId}?`)) {
+        return;
+      }
+
+      try {
+        if (typeof supabaseClient !== 'undefined' && supabaseClient) {
+          const { error } = await supabaseClient
+            .from((typeof SUPABASE_CONFIG !== 'undefined' && SUPABASE_CONFIG.tableName) || 'registrations')
+            .delete()
+            .eq('student_id', studentId);
+
+          if (error) {
+            alert('Failed to delete from Supabase: ' + error.message);
+            return;
+          }
+          loadRegistrations();
+        } else {
+          const response = await fetch('/api/delete-registration', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ studentId, index: originalIndex })
+          });
+
+          if (response.ok) {
+            loadRegistrations();
+          } else {
+            alert('Failed to delete registration record.');
+          }
+        }
+      } catch (err) {
+        console.error('Delete error:', err);
+        alert('Network error while deleting registration.');
+      }
+    }
+
+    // Export CSV Download Trigger (Works Client-Side with UTF-8 BOM)
+    document.getElementById('exportCsvBtn').addEventListener('click', () => {
+      if (allRegistrations.length === 0) {
+        alert('No registrations to export.');
+        return;
+      }
+
+      let csv = '\uFEFF"Index","Full Name","Email Address","Student ID","Faculty","Registered At"\n';
+      allRegistrations.forEach((item, index) => {
+        const name = (item.fullName || '').replace(/"/g, '""');
+        const email = (item.email || '').replace(/"/g, '""');
+        const id = (item.studentId || '').replace(/"/g, '""');
+        const faculty = (item.faculty || '').replace(/"/g, '""');
+        const date = item.submittedAt ? new Date(item.submittedAt).toLocaleString() : '';
+        csv += `"${index + 1}","${name}","${email}","\t${id}","${faculty}","${date}"\n`;
+      });
+
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.setAttribute('download', 'IEEE_IU_SB_Registrations.csv');
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    });
+
+    // Refresh Trigger
+    document.getElementById('refreshBtn').addEventListener('click', loadRegistrations);
+
+    // Filter listeners
+    document.getElementById('searchInput').addEventListener('input', renderTable);
+    document.getElementById('facultyFilter').addEventListener('change', renderTable);
+
+    // HTML escape helper
+    function escapeHtml(str) {
+      const div = document.createElement('div');
+      div.textContent = str;
+      return div.innerHTML;
+    }
+
+    // Initialize check
+    checkAuthSession();
+  </script>
+</body>
+</html>

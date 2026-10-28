@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Registration Confirmation - IEEE Innovation University Student Branch (IEEE IU SB).">
+  <title>Registration Confirmed - IEEE IU SB</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" type="image/png" href="assets/ieee-logo.png">
+</head>
+<body>
+  <div class="page-container">
+    <main class="card-wrapper" role="main">
+      <!-- Card Container -->
+      <div class="registration-card">
+        
+        <!-- Header with Official Logos -->
+        <header class="form-header">
+          <div class="logos-row">
+            <div class="logo-box">
+              <img 
+                src="assets/innovation-university-logo.png" 
+                alt="Innovation University Logo" 
+                class="logo logo-iu"
+              />
+            </div>
+            <div class="logo-separator" aria-hidden="true"></div>
+            <div class="logo-box">
+              <img 
+                src="assets/ieee-logo.png" 
+                alt="IEEE Logo" 
+                class="logo logo-ieee"
+              />
+            </div>
+          </div>
+          <h1 class="form-title">IEEE IU SB Registration</h1>
+          <p class="form-subtitle">Innovation University Student Branch</p>
+        </header>
+
+        <!-- Dedicated Success Confirmation View -->
+        <div class="success-page-content">
+          <div class="success-icon-wrapper" aria-hidden="true">
+            <svg class="success-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+              <polyline points="22 4 12 14.01 9 11.01"></polyline>
+            </svg>
+          </div>
+
+          <h2 class="success-title">Submission Confirmed</h2>
+          <p class="success-subtitle-ar">تم التسجيل بنجاح</p>
+
+          <p class="success-message">Your registration has been submitted successfully.</p>
+
+          <!-- Dynamic Registration Summary Card -->
+          <div id="registrationSummary" class="summary-card" hidden>
+            <h3 class="summary-card-title">Registration Details</h3>
+            <div class="summary-row">
+              <span class="summary-label">Name:</span>
+              <span id="summaryName" class="summary-value"></span>
+            </div>
+            <div class="summary-row">
+              <span class="summary-label">ID:</span>
+              <span id="summaryId" class="summary-value"></span>
+            </div>
+            <div class="summary-row">
+              <span class="summary-label">Faculty:</span>
+              <span id="summaryFaculty" class="summary-value"></span>
+            </div>
+          </div>
+
+          <div class="welcome-box">
+            <p class="welcome-text">
+              Welcome to <strong>IEEE Innovation University Student Branch</strong>! We have received your application and will contact you via your registered email.
+            </p>
+            <p class="welcome-text-ar">
+              أهلاً بك في أسرة الفرع الطلابي! تم استلام بياناتك وسنتواصل معك قريباً عبر البريد الإلكتروني المسجل.
+            </p>
+          </div>
+
+          <!-- Actions -->
+          <div class="success-actions">
+            <a href="index.html" class="btn-submit" style="text-decoration: none;">
+              Register Another Student (تسجيل طالب آخر)
+            </a>
+          </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="form-footer">
+          <p class="footer-text">IEEE Innovation University Student Branch &copy; <span id="currentYear"></span></p>
+        </footer>
+
+      </div>
+    </main>
+  </div>
+
+  <script>
+    // Set dynamic copyright year
+    document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+    // Parse URL search parameters or session storage for registration details
+    (function () {
+      const params = new URLSearchParams(window.location.search);
+      const name = params.get('name') || sessionStorage.getItem('last_registered_name');
+      const id = params.get('id') || sessionStorage.getItem('last_registered_id');
+      const faculty = params.get('faculty') || sessionStorage.getItem('last_registered_faculty');
+
+      if (name || id || faculty) {
+        const summaryCard = document.getElementById('registrationSummary');
+        if (name) document.getElementById('summaryName').textContent = name;
+        if (id) document.getElementById('summaryId').textContent = id;
+        if (faculty) document.getElementById('summaryFaculty').textContent = faculty;
+        summaryCard.hidden = false;
+      }
+    })();
+  </script>
+</body>
+</html>
+
