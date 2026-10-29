@@ -1,0 +1,9 @@
+{
+  "name": "ieee-form",
+  "version": "1.0.0",
+  "private": true,
+  "description": "IEEE IU SB Registration Form",
+  "scripts": {
+    "build": "echo 'Build complete'"
+  }
+}

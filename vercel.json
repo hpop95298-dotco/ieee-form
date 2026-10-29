@@ -1,0 +1,5 @@
+{
+  "buildCommand": null,
+  "installCommand": "echo 'Static site ready'",
+  "outputDirectory": "."
+}
