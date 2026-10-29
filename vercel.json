@@ -1,5 +1,4 @@
 {
-  "buildCommand": null,
-  "installCommand": "echo 'Static site ready'",
-  "outputDirectory": "."
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "cleanUrls": true
 }
