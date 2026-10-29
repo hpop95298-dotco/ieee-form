@@ -9,9 +9,13 @@ create table if not exists public.registrations (
   created_at timestamptz default timezone('utc'::text, now()) not null,
   full_name text not null,
   email text not null,
+  phone text,
   student_id text not null,
   faculty text not null
 );
+
+-- In case the table already exists, run this single line to add the phone column:
+alter table public.registrations add column if not exists phone text;
 
 -- 2. Enable Row Level Security (RLS)
 alter table public.registrations enable row level security;

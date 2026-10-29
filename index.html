@@ -79,7 +79,25 @@
             <div id="emailError" class="field-error" role="alert" aria-live="assertive"></div>
           </div>
 
-          <!-- Field 3: ID -->
+          <!-- Field 3: Phone / Mobile Number -->
+          <div class="form-group" id="groupPhone">
+            <label for="phone" class="form-label">
+              Mobile Number (رقم الموبايل) <span class="required-indicator" aria-hidden="true">*</span>
+            </label>
+            <input 
+              type="tel" 
+              id="phone" 
+              name="phone" 
+              class="form-input" 
+              placeholder="e.g. 01012345678" 
+              autocomplete="tel"
+              required 
+              aria-required="true"
+            />
+            <div id="phoneError" class="field-error" role="alert" aria-live="assertive"></div>
+          </div>
+
+          <!-- Field 4: ID -->
           <div class="form-group" id="groupId">
             <label for="studentId" class="form-label">
               ID <span class="required-indicator" aria-hidden="true">*</span>
@@ -97,7 +115,7 @@
             <div id="idError" class="field-error" role="alert" aria-live="assertive"></div>
           </div>
 
-          <!-- Field 4: Faculty / College Selection -->
+          <!-- Field 5: Faculty / College Selection -->
           <div class="form-group" id="groupFaculty">
             <label for="faculty" class="form-label">
               Faculty <span class="required-indicator" aria-hidden="true">*</span>

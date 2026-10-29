@@ -50,6 +50,12 @@
       error: document.getElementById('emailError'),
       validate: validateEmail
     },
+    phone: {
+      input: document.getElementById('phone'),
+      group: document.getElementById('groupPhone'),
+      error: document.getElementById('phoneError'),
+      validate: validatePhone
+    },
     studentId: {
       input: document.getElementById('studentId'),
       group: document.getElementById('groupId'),
@@ -94,6 +100,21 @@
     const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)+$/;
     if (!emailRegex.test(trimmed)) {
       return 'Please enter a valid email address (e.g., student@example.com).';
+    }
+    return '';
+  }
+
+  function validatePhone(value) {
+    const trimmed = (value || '').trim();
+    if (!trimmed) {
+      return 'Mobile Number is required (رقم الموبايل مطلوب).';
+    }
+    const cleanPhone = trimmed.replace(/[\s-]/g, '');
+    // Supports Egyptian formats: 010..., 011..., 012..., 015... or +201..., or general 10-15 digits
+    const phoneRegex = /^(?:\+?20|0)?1[0125][0-9]{8}$/;
+    const generalPhoneRegex = /^\+?[0-9]{10,15}$/;
+    if (!phoneRegex.test(cleanPhone) && !generalPhoneRegex.test(cleanPhone)) {
+      return 'Please enter a valid mobile number (e.g., 01012345678).';
     }
     return '';
   }
@@ -227,6 +248,7 @@
     const payload = {
       fullName: fields.fullName.input.value.trim(),
       email: fields.email.input.value.trim(),
+      phone: fields.phone.input.value.trim(),
       studentId: fields.studentId.input.value.trim(),
       faculty: fields.faculty.input.value.trim(),
       submittedAt: new Date().toISOString()
@@ -261,14 +283,27 @@
     // 1. If Supabase Cloud is configured, insert directly into Supabase
     if (typeof supabaseClient !== 'undefined' && supabaseClient) {
       try {
-        const { error } = await supabaseClient
+        const record = {
+          full_name: payload.fullName,
+          email: payload.email,
+          phone: payload.phone,
+          student_id: payload.studentId,
+          faculty: payload.faculty
+        };
+
+        let { error } = await supabaseClient
           .from((typeof SUPABASE_CONFIG !== 'undefined' && SUPABASE_CONFIG.tableName) || 'registrations')
-          .insert([{
-            full_name: payload.fullName,
-            email: payload.email,
-            student_id: payload.studentId,
-            faculty: payload.faculty
-          }]);
+          .insert([record]);
+
+        // Graceful fallback: If Supabase schema does not have the 'phone' column yet, retry without it
+        if (error && error.message && error.message.toLowerCase().includes('phone')) {
+          console.warn('[Supabase] phone column not present, retrying without phone column.');
+          delete record.phone;
+          const retry = await supabaseClient
+            .from((typeof SUPABASE_CONFIG !== 'undefined' && SUPABASE_CONFIG.tableName) || 'registrations')
+            .insert([record]);
+          error = retry.error;
+        }
 
         if (error) {
           console.error('[Supabase Error]:', error);
@@ -351,6 +386,7 @@
     if (payload) {
       try {
         sessionStorage.setItem('last_registered_name', payload.fullName || '');
+        sessionStorage.setItem('last_registered_phone', payload.phone || '');
         sessionStorage.setItem('last_registered_id', payload.studentId || '');
         sessionStorage.setItem('last_registered_faculty', payload.faculty || '');
       } catch (_) {}
@@ -358,7 +394,7 @@
 
     // Build URL query string with registration details
     const query = payload
-      ? `?name=${encodeURIComponent(payload.fullName || '')}&id=${encodeURIComponent(payload.studentId || '')}&faculty=${encodeURIComponent(payload.faculty || '')}`
+      ? `?name=${encodeURIComponent(payload.fullName || '')}&phone=${encodeURIComponent(payload.phone || '')}&id=${encodeURIComponent(payload.studentId || '')}&faculty=${encodeURIComponent(payload.faculty || '')}`
       : '';
 
     // If running in browser environment, redirect to dedicated success page
@@ -402,6 +438,7 @@
     fields,
     validateFullName,
     validateEmail,
+    validatePhone,
     validateStudentId,
     validateFaculty,
     handleSubmit,

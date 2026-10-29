@@ -59,6 +59,10 @@
               <span id="summaryName" class="summary-value"></span>
             </div>
             <div class="summary-row">
+              <span class="summary-label">Phone:</span>
+              <span id="summaryPhone" class="summary-value"></span>
+            </div>
+            <div class="summary-row">
               <span class="summary-label">ID:</span>
               <span id="summaryId" class="summary-value"></span>
             </div>
@@ -102,12 +106,14 @@
     (function () {
       const params = new URLSearchParams(window.location.search);
       const name = params.get('name') || sessionStorage.getItem('last_registered_name');
+      const phone = params.get('phone') || sessionStorage.getItem('last_registered_phone');
       const id = params.get('id') || sessionStorage.getItem('last_registered_id');
       const faculty = params.get('faculty') || sessionStorage.getItem('last_registered_faculty');
 
-      if (name || id || faculty) {
+      if (name || phone || id || faculty) {
         const summaryCard = document.getElementById('registrationSummary');
         if (name) document.getElementById('summaryName').textContent = name;
+        if (phone) document.getElementById('summaryPhone').textContent = phone;
         if (id) document.getElementById('summaryId').textContent = id;
         if (faculty) document.getElementById('summaryFaculty').textContent = faculty;
         summaryCard.hidden = false;
